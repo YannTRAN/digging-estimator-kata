@@ -86,7 +86,7 @@ class DiggingEstimator2:
         print("nt inn_keeper:", nt.inn_keepers)
         print('nt.guards:',nt.guards)
 
-
+        print(dt)
         composition.total = dt.miners + dt.washers + dt.healers + dt.smithies + dt.inn_keepers + nt.miners + nt.washers + nt.healers + nt.smithies + nt.inn_keepers + nt.guards + nt.guard_managers + nt.lighters
 
         return composition
