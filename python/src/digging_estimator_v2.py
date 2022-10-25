@@ -40,13 +40,11 @@ class DiggingEstimator2:
 
         composition = TeamComposition()
 
-
         # Miners
         dt = composition.day_team
         nt = composition.night_team
 
-        digginh = digging(max_dig_per_rotation,dig_per_rotation,length,days)
-
+        digginh = digging(max_dig_per_rotation, dig_per_rotation, length, days)
 
         dt.miners += digginh.miner()[0]
         nt.miners += digginh.miner()[1]
@@ -62,13 +60,7 @@ class DiggingEstimator2:
         dt.inn_keepers += digginh.inn_keepers()[0]
         nt.inn_keepers += digginh.inn_keepers()[1]
 
-
-
-
         dt.washers = digginh.washers()[0]
-
-
-
 
         while True:
             old_washers = nt.washers
@@ -84,7 +76,7 @@ class DiggingEstimator2:
 
         print("nt whasher:", nt.washers)
         print("nt inn_keeper:", nt.inn_keepers)
-        print('nt.guards:',nt.guards)
+        print('nt.guards:', nt.guards)
 
         print(dt)
         composition.total = dt.miners + dt.washers + dt.healers + dt.smithies + dt.inn_keepers + nt.miners + nt.washers + nt.healers + nt.smithies + nt.inn_keepers + nt.guards + nt.guard_managers + nt.lighters
@@ -100,6 +92,3 @@ class DiggingEstimator2:
         url = "dtp://research.vin.co/digging-rate/" + rock_type
         print("Trying to fetch" + url)
         raise Exception("Does not work in test mode")
-
-
-
