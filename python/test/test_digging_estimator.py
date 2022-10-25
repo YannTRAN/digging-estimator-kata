@@ -1,5 +1,6 @@
 from python.src.digging_estimator_v2 import *
 from python.src.digging_estimator import *
+from python.src.digging_estimator_v2 import InvalidFormatException as InvalidFormatException_v2, TunnelTooLongForDelayException as TunnelTooLongForDelayException_v2
 import pytest
 import unittest
 from unittest.mock import MagicMock
@@ -25,13 +26,13 @@ class DiggingEstimatorTest(unittest.TestCase):
     def test_error_negative_day(self):
         estimator = DiggingEstimator2()
         estimator.get = MagicMock(return_value=[0, 3, 5.5, 7])
-        with pytest.raises(InvalidFormatException):
+        with pytest.raises(InvalidFormatException_v2):
             estimator.tunnel(28, -100, "Granite")
 
     def test_error_impossible_digging(self):
         estimator = DiggingEstimator2()
         estimator.get = MagicMock(return_value=[0, 3, 5.5, 7])
-        with pytest.raises(TunnelTooLongForDelayException):
+        with pytest.raises(TunnelTooLongForDelayException_v2):
             estimator.tunnel(50, 1, "Granite")
 
     def test_max_dw_miner_dt(self):

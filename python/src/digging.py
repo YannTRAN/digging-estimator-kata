@@ -79,6 +79,4 @@ class digging:
 
 
     def protectors(self):
-
-
         pass

@@ -1,8 +1,9 @@
 from python.src.digging_estimator_v2 import *
 from python.src.digging_estimator import *
-import unittest
 
 from unittest.mock import MagicMock
+
+
 
 estimator = DiggingEstimator()
 estimator.get = MagicMock(return_value=[0, 3, 5.5, 7])

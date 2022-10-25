@@ -26,7 +26,6 @@ class TeamComposition:
 
     total = 0
 
-
 class DiggingEstimator2:
     def tunnel(self, length, days, rock_type):
         dig_per_rotation = self.get(rock_type)
