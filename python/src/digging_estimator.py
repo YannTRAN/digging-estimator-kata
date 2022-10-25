@@ -1,5 +1,5 @@
 import math
-
+from python.src.digging import *
 
 class TunnelTooLongForDelayException(Exception):
     pass
@@ -10,24 +10,21 @@ class InvalidFormatException(Exception):
 
 
 class Team:
-    def __init__(self):
-        self.miners = 0
-        self.healers = 0
-        self.smithies = 0
-        self.lighters = 0
-        self.inn_keepers = 0
-        self.guards = 0
-        self.guard_managers = 0
-        self.washers = 0
+    miners = 0
+    healers = 0
+    smithies = 0
+    lighters = 0
+    inn_keepers = 0
+    guards = 0
+    guard_managers = 0
+    washers = 0
 
 
 class TeamComposition:
+    day_team: Team = Team()
+    night_team: Team = Team()
 
-    def __init__(self):
-        self.day_team: Team = Team()
-        self.night_team: Team = Team()
-
-        self.total = 0
+    total = 0
 
 
 class DiggingEstimator:
@@ -44,50 +41,44 @@ class DiggingEstimator:
         composition = TeamComposition()
 
         # Miners
-        for i in range(0, len(dig_per_rotation)-1):
-            if dig_per_rotation[i] < math.floor(length / days):
-                composition.day_team.miners += 1
-
-        if math.floor(length / days) > max_dig_per_rotation:
-            for i in range(0, len(dig_per_rotation) -1):
-                if dig_per_rotation[i] + max_dig_per_rotation < math.floor(length / days):
-                    composition.night_team.miners += 1
-
         dt = composition.day_team
         nt = composition.night_team
 
-        if dt.miners > 0:
-            dt.healers += 1
-            dt.smithies += 1
-            dt.smithies += 1
+        digginh = digging(max_dig_per_rotation, dig_per_rotation, length, days)
 
-        if nt.miners > 0:
-            nt.healers += 1
-            nt.smithies += 1
-            nt.smithies += 1
+        dt.miners += digginh.miner()[0]
+        nt.miners += digginh.miner()[1]
 
-        if nt.miners > 0:
-            nt.lighters = nt.miners + 1
+        dt.healers += digginh.healers()[0]
+        nt.healers += digginh.healers()[1]
 
-        if dt.miners > 0:
-            dt.inn_keepers = math.ceil((dt.miners + dt.healers + dt.smithies) / 4.0) * 4
-            dt.washers = math.ceil((dt.miners + dt.healers + dt.smithies + dt.inn_keepers) / 10.0)
+        dt.smithies += digginh.smithies()[0]
+        nt.smithies += digginh.smithies()[1]
 
-        if nt.miners > 0:
-            nt.inn_keepers = math.ceil((nt.miners + nt.healers + nt.smithies + nt.lighters) / 4.0) * 4
+        nt.lighters += digginh.lighters()
+
+        dt.inn_keepers += digginh.inn_keepers()[0]
+        nt.inn_keepers += digginh.inn_keepers()[1]
+
+        dt.washers = digginh.washers()[0]
 
         while True:
             old_washers = nt.washers
             old_guards = nt.guards
             old_chief_guard = nt.guard_managers
 
-            nt.washers = math.ceil((nt.miners + nt.healers + nt.smithies + nt.inn_keepers + nt.lighters + nt.guards + nt.guard_managers) / 10.0)
-            nt.guards = math.ceil((nt.healers + nt.miners + nt.smithies + nt.lighters + nt.washers) / 3.0)
-            nt.guard_managers = math.ceil((nt.guards) / 3.0)
+            nt.washers = digginh.washers()[1]
+            nt.guards = digginh.guards()
+            nt.guard_managers = digginh.guard_managers()
 
             if old_washers == nt.washers and old_guards == nt.guards and old_chief_guard == nt.guard_managers:
                 break
 
+        print("nt whasher:", nt.washers)
+        print("nt inn_keeper:", nt.inn_keepers)
+        print('nt.guards:', nt.guards)
+
+        print(dt)
         composition.total = dt.miners + dt.washers + dt.healers + dt.smithies + dt.inn_keepers + nt.miners + nt.washers + nt.healers + nt.smithies + nt.inn_keepers + nt.guards + nt.guard_managers + nt.lighters
 
         return composition
@@ -101,3 +92,4 @@ class DiggingEstimator:
         url = "dtp://research.vin.co/digging-rate/" + rock_type
         print("Trying to fetch" + url)
         raise Exception("Does not work in test mode")
+
