@@ -6,13 +6,6 @@ import pytest
 
 class DiggingEstimatorTest(unittest.TestCase):
 
-    def test_returns_as_doctor_Pockosky_says(self):
-
-        estimator = DiggingEstimator()
-        estimator.get = MagicMock(return_value=[0, 3, 5.5, 7])
-        result = estimator.tunnel(28, 2, "Granite")
-        self.assertEqual(result.total, 48)
-
     def test_error_negative_day(self):
 
         estimator = DiggingEstimator()
@@ -50,21 +43,6 @@ class DiggingEstimatorTest(unittest.TestCase):
         estimator.get = MagicMock(return_value=[0, 3, 5.5, 7])
         result = estimator.tunnel(20, 2000, "Granite")
         self.assertEqual(result.night_team.miners, 0)
-
-
-    def test_max_dw_compo_total_dt(self):
-        estimator = DiggingEstimator()
-        estimator.get = MagicMock(return_value=[0, 3, 5.5, 7])
-        result = estimator.tunnel(28, 2, "Granite")
-        total_dt = result.day_team.miners + result.day_team.healers + result.day_team.smithies + result.day_team.lighters + result.day_team.inn_keepers + result.day_team.guards + result.day_team.guard_managers + result.day_team.washers
-        self.assertEqual(total_dt,16)
-
-    def test_max_dw_compo_total_nt(self):
-        estimator = DiggingEstimator()
-        estimator.get = MagicMock(return_value=[0, 3, 5.5, 7])
-        result = estimator.tunnel(28, 2, "Granite")
-        total_nt = result.night_team.miners + result.night_team.healers + result.night_team.smithies + result.night_team.lighters + result.night_team.inn_keepers + result.night_team.guards + result.night_team.guard_managers + result.night_team.washers
-        self.assertEqual(total_nt,32)
 
     def test_max_dw_guard_manager_total_nt(self):
         estimator = DiggingEstimator()
@@ -108,7 +86,6 @@ class DiggingEstimatorTest(unittest.TestCase):
         total_nt = result.night_team.smithies
         self.assertEqual(total_nt, 2)
 
-
     def test_max_dw_washer_total_dt(self):
         estimator = DiggingEstimator()
         estimator.get = MagicMock(return_value=[0, 3, 5.5, 7])
@@ -138,6 +115,26 @@ class DiggingEstimatorTest(unittest.TestCase):
         result = estimator.tunnel(28, 2, "Granite")
         total_nt =  result.night_team.lighters
         self.assertEqual(total_nt, 4)
+
+    def test_max_dw_compo_total(self):
+        estimator = DiggingEstimator()
+        estimator.get = MagicMock(return_value=[0, 3, 5.5, 7])
+        result = estimator.tunnel(28, 2, "Granite")
+        self.assertEqual(result.total, 48)
+
+    def test_max_dw_compo_total_nt(self):
+        estimator = DiggingEstimator()
+        estimator.get = MagicMock(return_value=[0, 3, 5.5, 7])
+        result = estimator.tunnel(28, 2, "Granite")
+        total_nt = result.night_team.miners + result.night_team.healers + result.night_team.smithies + result.night_team.lighters + result.night_team.inn_keepers + result.night_team.guards + result.night_team.guard_managers + result.night_team.washers
+        self.assertEqual(total_nt,32)
+
+    def test_max_dw_compo_total_dt(self):
+        estimator = DiggingEstimator()
+        estimator.get = MagicMock(return_value=[0, 3, 5.5, 7])
+        result = estimator.tunnel(28, 2, "Granite")
+        total_dt = result.day_team.miners + result.day_team.healers + result.day_team.smithies + result.day_team.lighters + result.day_team.inn_keepers + result.day_team.guards + result.day_team.guard_managers + result.day_team.washers
+        self.assertEqual(total_dt,16)
 
 # to do : tests pour la nouvelle feature
 
