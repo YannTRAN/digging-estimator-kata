@@ -26,7 +26,7 @@ class TeamComposition:
 
     total = 0
 
-class DiggingEstimator2:
+class DiggingEstimator:
     def tunnel(self, length, days, rock_type):
         dig_per_rotation = self.get(rock_type)
         max_dig_per_rotation = dig_per_rotation[len(dig_per_rotation) - 1]
@@ -73,11 +73,7 @@ class DiggingEstimator2:
             if old_washers == nt.washers and old_guards == nt.guards and old_chief_guard == nt.guard_managers:
                 break
 
-        print("nt whasher:", nt.washers)
-        print("nt inn_keeper:", nt.inn_keepers)
-        print('nt.guards:', nt.guards)
 
-        print(dt)
         composition.total = dt.miners + dt.washers + dt.healers + dt.smithies + dt.inn_keepers + nt.miners + nt.washers + nt.healers + nt.smithies + nt.inn_keepers + nt.guards + nt.guard_managers + nt.lighters
 
         return composition

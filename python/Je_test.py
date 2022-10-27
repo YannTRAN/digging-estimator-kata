@@ -9,7 +9,3 @@ estimator = DiggingEstimator()
 estimator.get = MagicMock(return_value=[0, 3, 5.5, 7])
 result = estimator.tunnel(28, 2, "Granite")
 
-
-estimator = DiggingEstimator2()
-estimator.get = MagicMock(return_value=[0, 3, 5.5, 7])
-result = estimator.tunnel(28, 2, "Granite")
