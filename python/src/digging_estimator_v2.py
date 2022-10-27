@@ -18,6 +18,7 @@ class Team:
     guards = 0
     guard_managers = 0
     washers = 0
+    protectors = 0
 
 
 class TeamComposition:
@@ -43,38 +44,41 @@ class DiggingEstimator:
         dt = composition.day_team
         nt = composition.night_team
 
-        digginh = digging(max_dig_per_rotation, dig_per_rotation, length, days)
+        digging = Digging(max_dig_per_rotation, dig_per_rotation, length, days)
 
-        dt.miners += digginh.miner()[0]
-        nt.miners += digginh.miner()[1]
+        dt.miners += digging.miner()[0]
+        nt.miners += digging.miner()[1]
 
-        dt.healers += digginh.healers()[0]
-        nt.healers += digginh.healers()[1]
+        dt.protectors += digging.protectors()[0]
+        nt.protectors += digging.protectors()[1]
 
-        dt.smithies += digginh.smithies()[0]
-        nt.smithies += digginh.smithies()[1]
+        dt.healers += digging.healers()[0]
+        nt.healers += digging.healers()[1]
 
-        nt.lighters += digginh.lighters()
+        dt.smithies += digging.smithies()[0]
+        nt.smithies += digging.smithies()[1]
 
-        dt.inn_keepers += digginh.inn_keepers()[0]
-        nt.inn_keepers += digginh.inn_keepers()[1]
+        nt.lighters += digging.lighters()
 
-        dt.washers = digginh.washers()[0]
+        dt.inn_keepers += digging.inn_keepers()[0]
+        nt.inn_keepers += digging.inn_keepers()[1]
+
+        dt.washers = digging.washers()[0]
 
         while True:
             old_washers = nt.washers
             old_guards = nt.guards
             old_chief_guard = nt.guard_managers
 
-            nt.washers = digginh.washers()[1]
-            nt.guards = digginh.guards()
-            nt.guard_managers = digginh.guard_managers()
+            nt.washers = digging.washers()[1]
+            nt.guards = digging.guards()
+            nt.guard_managers = digging.guard_managers()
 
             if old_washers == nt.washers and old_guards == nt.guards and old_chief_guard == nt.guard_managers:
                 break
 
 
-        composition.total = dt.miners + dt.washers + dt.healers + dt.smithies + dt.inn_keepers + nt.miners + nt.washers + nt.healers + nt.smithies + nt.inn_keepers + nt.guards + nt.guard_managers + nt.lighters
+        composition.total = dt.miners + dt.washers + dt.healers + dt.smithies + dt.inn_keepers + dt.protectors + nt.miners + nt.washers + nt.healers + nt.smithies + nt.inn_keepers + nt.guards + nt.guard_managers + nt.lighters + nt.protectors
 
         return composition
 

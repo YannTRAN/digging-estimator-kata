@@ -1,16 +1,18 @@
 import math
 
 
-class digging:
+class Digging:
 
     def __init__(self,max_dig_per_rotation,dig_per_rotation,length,days):
-        self.max_dig_per_rotation =max_dig_per_rotation
+        self.max_dig_per_rotation = max_dig_per_rotation
         self.dig_per_rotation = dig_per_rotation
         self.length = length
         self.days = days
-
         self.nt_guards = 0
         self.nt_guard_managers = 0
+        self.dt_protectors = 0
+        self.nt_protectors = 0
+
 
     def miner(self):
         self.dt_miners = 0
@@ -45,21 +47,22 @@ class digging:
 
 
     def lighters(self):
-        self.nt_lighters = self.nt_miners + 1
-
+        if self.gob() == True:
+            self.nt_lighters = self.nt_miners + 3
+        else:
+            self.nt_lighters = self.nt_miners + 1
 
         return self.nt_lighters
 
 
     def inn_keepers(self):
-        self.dt_inn_keepers = math.ceil((self.dt_miners + self.dt_healers + self.dt_smithies) / 4.0) * 4
-        self.nt_inn_keepers = math.ceil((self.nt_miners + self.nt_healers + self.nt_smithies + self.nt_lighters) / 4.0) * 4
+        self.dt_inn_keepers = math.ceil((self.dt_miners + self.dt_healers + self.dt_smithies + self.dt_protectors) / 4.0) * 4
+        self.nt_inn_keepers = math.ceil((self.nt_miners + self.nt_healers + self.nt_smithies + self.nt_lighters + self.nt_protectors) / 4.0) * 4
 
         return self.dt_inn_keepers, self.nt_inn_keepers
 
 
     def guards(self):
-
         self.nt_guards = math.ceil((self.nt_healers + self.nt_miners + self.nt_smithies + self.nt_lighters + self.nt_washers) / 3.0)
 
         return self.nt_guards
@@ -70,8 +73,8 @@ class digging:
         return self.nt_guard_managers
 
     def washers(self):
-        self.dt_washers = math.ceil((self.dt_miners + self.dt_healers + self.dt_smithies + self.dt_inn_keepers) / 10.0)
-        self.nt_washers = math.ceil((self.nt_miners + self.nt_healers + self.nt_smithies + self.nt_inn_keepers + self.nt_lighters + self.nt_guards + self.nt_guard_managers) / 10.0)
+        self.dt_washers = math.ceil((self.dt_miners + self.dt_healers + self.dt_smithies + self.dt_inn_keepers + self.dt_protectors) / 10.0)
+        self.nt_washers = math.ceil((self.nt_miners + self.nt_healers + self.nt_smithies + self.nt_inn_keepers + self.nt_lighters + self.nt_guards + self.nt_guard_managers + self.nt_protectors) / 10.0)
 
         return self.dt_washers,self.nt_washers
 
@@ -79,4 +82,14 @@ class digging:
 
 
     def protectors(self):
+        if self.gob() == True:
+            self.dt_protectors = 2
+            self.nt_protectors = 2
+
+        return self.dt_protectors, self.nt_protectors
+
+    def gob(self):
+        # for example for Moria it returns True
+        # so a day team on 2 miners and a night team of 1 miner dig 8.5 m / d
+        url = "dtp://research.vin.co/are-there-goblins/"
         pass
