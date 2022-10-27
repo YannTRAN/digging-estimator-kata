@@ -11,7 +11,8 @@ class digging:
 
         self.nt_guards = 0
         self.nt_guard_managers = 0
-
+        self.dt_protectors = 0
+        self.nt_protectors = 0
     def miner(self):
         self.dt_miners = 0
         self.nt_miners = 0
@@ -45,9 +46,9 @@ class digging:
 
 
     def lighters(self):
-        if self.gob(goblin) == True:
+        if self.gob() == True:
             self.nt_lighters = self.nt_miners + 3
-        else
+        else:
             self.nt_lighters = self.nt_miners + 1
 
 
@@ -55,8 +56,8 @@ class digging:
 
 
     def inn_keepers(self):
-        self.dt_inn_keepers = math.ceil((self.dt_miners + self.dt_healers + self.dt_smithies + self.protectors) / 4.0) * 4
-        self.nt_inn_keepers = math.ceil((self.nt_miners + self.nt_healers + self.nt_smithies + self.nt_lighters + self.protectors) / 4.0) * 4
+        self.dt_inn_keepers = math.ceil((self.dt_miners + self.dt_healers + self.dt_smithies + self.dt_protectors) / 4.0) * 4
+        self.nt_inn_keepers = math.ceil((self.nt_miners + self.nt_healers + self.nt_smithies + self.nt_lighters + self.nt_protectors) / 4.0) * 4
 
         return self.dt_inn_keepers, self.nt_inn_keepers
 
@@ -73,8 +74,8 @@ class digging:
         return self.nt_guard_managers
 
     def washers(self):
-        self.dt_washers = math.ceil((self.dt_miners + self.dt_healers + self.dt_smithies + self.dt_inn_keepers + self.protectors) / 10.0)
-        self.nt_washers = math.ceil((self.nt_miners + self.nt_healers + self.nt_smithies + self.nt_inn_keepers + self.nt_lighters + self.nt_guards + self.nt_guard_managers + self.protectors) / 10.0)
+        self.dt_washers = math.ceil((self.dt_miners + self.dt_healers + self.dt_smithies + self.dt_inn_keepers + self.dt_protectors) / 10.0)
+        self.nt_washers = math.ceil((self.nt_miners + self.nt_healers + self.nt_smithies + self.nt_inn_keepers + self.nt_lighters + self.nt_guards + self.nt_guard_managers + self.nt_protectors) / 10.0)
 
         return self.dt_washers,self.nt_washers
 
@@ -82,19 +83,14 @@ class digging:
 
 
     def protectors(self):
-        if self.gob(goblin) == True:
-            print (self.gob(goblin))
-            self.protectors = 2
-            self.protectors = 2
-        else
-            self.protectors = 0
-            self.protectors = 0
+        if self.gob() == True:
+            self.dt_protectors = 2
+            self.nt_protectors = 2
 
         return self.protectors, self.protectors
 
-    def gob(self, goblin):
+    def gob(self):
         # for example for Moria it returns True
         # so a day team on 2 miners and a night team of 1 miner dig 8.5 m / d
-        url = "dtp://research.vin.co/are-there-goblins/" + goblin
-        print("Trying to fetch" + url)
-        raise Exception("Does not work in test mode")
+        url = "dtp://research.vin.co/are-there-goblins/"
+        pass
